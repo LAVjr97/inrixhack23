@@ -2,6 +2,8 @@ import requests
 import apikeys
 import json as js
 
+
+
 def generate_token():
     payload={}
     token_url = f"https://api.iq.inrix.com/auth/v1/appToken?appId={apikeys.APP_ID}&hashToken={apikeys.HASH_TOKEN}"
@@ -23,9 +25,12 @@ def calcFastestRoute(start_coordinates, dest_coordinates):
         response = requests.request("GET", url, headers=headers, data=payload)
     except requests.exceptions.RequestException as e:
         print(e)
-    
+    if response.text == "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhcHBJZCI6Imxlamd5NzNhMTQiLCJ0b2tlbiI6eyJpdiI6ImMzYmJiMDkxNmI2MGM0ODY2Mjc3ZTEyMTlhMmZiNzcyIiwiY29udGVudCI6ImJkOTBlNzI5Njk0MWU5NzM2Y2YzYTg3NTliOWFlMjhhNjYzNzA3OTMyMmMxOWY4NzkyNjE4YTRkOTZlMzA5OWQwNGRiOTIyYjQ5YTY1ZTAzZjdlNmU1NGFhZDRjMDkyZDAwZTYxNDI1YjMwNDgxMDhiNzllN2NhYjQ5NTNhOGQ2M2I2ODIxMzkwYjI4OGM4NDU3Y2VjYmM5YjI2OWEzMTc0YTQyMDdlNTAwMWZjNmQ1NDFlZjdhMGI4MmZhOTNiOTQ2ZWM4Y2Y3MzRkYzljY2QxNGI4Y2NhNDZmY2NiZDNhMTRmZDYzYTFkNzQ1MjJjZGJiZTE0M2M4Mzk4YTM4MjFmOGY5OTI4ZDZhMThkM2RmNzY2OThkZWQ3MDExMDA5Yzc5NmVlZDc5ODc0ZjNkZDY1NmFmZGQxMzhjNTBjODlkNmRlNzUyZTYwMmQyZTEyMjM3Zjk4MGY2NDU0ODNjNGY4MzljNTMwZmEwODRlOTk4MjA3ZTU1OThmODE3ZTYyZDY4M2Y5MTFhZDkzMWY5MGE4N2FjNDIwMzQ2Yzk2MGZkOTE2YTVmMTM5NmExNjZhM2VmZGQ1YWMyMTVlYTc0YjhkOTk2MzYyNWZiZDZhMzQwOGU1YjY2YjQxYTk5YWNjY2I2MGEzNzI2Y2NhZDMwNTRhNWE4MWE3ODc4MTQ4Y2VjOTYzYWZiMDc2MTQ1YmQzMWZlY2RiNGQxMmM5ZTM2ZDViODI3MWQyMjI1ZGRkYThhYTYzOTI3NTY4YzJmZmEwYzNiMzYxOWY0YmY0YTdmODUzYWUzNzA1MjFmY2MxZDdiOWY3NTUyOWRiZWIzYWZhNzQzYjZjODdkNWVjMzljZTI4MWIzODZiNTMyMmE2Y2Y5MTMyMzMyIn0sInNlY3VyaXR5VG9rZW4iOnsiaXYiOiJjM2JiYjA5MTZiNjBjNDg2NjI3N2UxMjE5YTJmYjc3MiIsImNvbnRlbnQiOiJhOWE3ZWUwNjUxNmRiOTViNzBmNzk0NjVhNGE0OWNlYzdkMGEwYmE4MDA5YTk5ZGZjNjQ5OTczZWFlZjI0ZTgzMzFjMjlhMjIwYjk0MGQyMWY5Y2VmODc0In0sImp0aSI6IjhjZjQxNzM4LWZiZTgtNDZjNC04ZWYzLWJkODcwNmFjMzg4NCIsImlhdCI6MTY5OTc3MTEyMSwiZXhwIjoxNjk5Nzc0NzIxfQ.XbVafqw3ZJa0q53K3jB9sjwwTcbsFcYOPBd67qyuqiI":
+        print("same")
+    else:
+        print("Not Same")
     response_json = js.loads(response.text) 
-        
+    
     # STUDENT WORK: customize route so that it gives the fastest route from start to dest 
     # considering total distance and average speed with consideration to safety fast travel
     # and overall efficiency

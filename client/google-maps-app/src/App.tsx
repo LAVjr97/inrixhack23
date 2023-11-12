@@ -1,9 +1,9 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 const containerStyle = {
-  width: '50%',
-  height: '550px',
+  width: '80%',
+  height: '500px',
   margin: '0 auto',
 };
 
@@ -12,61 +12,64 @@ const center = {
   lng: -122.4194,
 };
 
-const [startLocation, setStartLocation] = useState('');
-const [destinationLocation, setDestinationLocation] = useState('');
-const App = () => {
-   
-    const [clicked, setClicked] = useState(false)
-
-    const handleSubmit = () => {
-      console.log('Submitted:', startLocation, destinationLocation);
-    };
-
-    return (
-      <div></div>
-    );
-}
-
-
-const Homepage = () => {
+function App() {
+  const [startPosition, setStartPosition] = useState(center);
+  const [clickedPositions, setClickedPositions] = useState<google.maps.LatLngLiteral[]>([]);
+  const [coordinatesArray, setCoordinatesArray] = useState<{ lat: number; lng: number }[]>([]);
+  const [textFieldValues, setTextFieldValues] = useState<string[]>(['', '']);
   
-  return (<div className="container text-center mt-5">
-          <input
-            type="text"
-            placeholder="Text Field 1"
-            className="form-control mb-2"
-            value={startLocation}
-            onChange={(e) => setStartLocation(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Text Field 2"
-            className="form-control mb-2"
-            value={destinationLocation}
-            onChange={(e) => setDestinationLocation(e.target.value)}
-          />
-          
-        </div>
-      )
-}
+  const handleMapClick = (event: google.maps.MapMouseEvent | google.maps.IconMouseEvent) => {
+    if (clickedPositions.length < 2 && event.latLng) {
+      const latLng = event.latLng as google.maps.LatLng;
+      const clickedPosition = { lat: latLng.lat(), lng: latLng.lng() };
 
-const Results = () => {
-  const [data, setData] = useState([{}])
-    useEffect(() => {
-        fetch("/results")
-          .then(res=>res.json())
-          .then(data => {
-          setData(data)
-          console.log(data)
-        })
-    }, [])
+      // Update coordinatesArray with the first two clicked positions
+      setCoordinatesArray(prevCoordinates => [
+        ...(prevCoordinates.length < 2 ? prevCoordinates : prevCoordinates.slice(2)),
+        clickedPosition,
+      ]);
+
+      setClickedPositions(prevPositions => [...prevPositions, clickedPosition]);
+
+      if (clickedPositions.length === 0) {
+        // Set the start position only once when the first point is clicked
+        setStartPosition(clickedPosition);
+        setTextFieldValues([`${clickedPosition.lat}`, `${clickedPosition.lng}`]);
+      } else {
+        setTextFieldValues(prevValues => [...prevValues, `${clickedPosition.lat}`, `${clickedPosition.lng}`]);
+      }
+    }
+  };
+
+  const handleSubmit = () => {
+    // Process or use the coordinates as needed
+    console.log('Submitted Coordinates:', coordinatesArray);
+    // You can add further processing or submit the coordinates to a server here
+  };
+
   return (
-    <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ''}>
-      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={12.2}>
-        <Marker position={center} />
-      </GoogleMap>
-    </LoadScript>
-  )
+    <div>
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ''}>
+        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10} onClick={handleMapClick}>
+          {clickedPositions.map((position, index) => (
+            <Marker key={index} position={position} label={`Point ${index + 0.5}`} />
+          ))}
+          {startPosition && <Marker position={startPosition} label="Start" />}
+        </GoogleMap>
+      </LoadScript>
+
+      {textFieldValues.map((value, index) => (
+        <div key={index}>
+          <label></label>
+          <input type="text" value={value} readOnly />
+        </div>
+      ))}
+
+      {clickedPositions.length === 2 && (
+        <button onClick={handleSubmit}>Submit</button>
+      )}
+    </div>
+  );
 }
 
 export default App;

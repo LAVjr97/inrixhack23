@@ -9,6 +9,8 @@ def generate_token():
     token_json = js.loads(token_response.text)
     return token_json["result"]["token"]
 
+TOKEN = generate_token()
+
 def calcFastestRoute(start_coordinates, dest_coordinates):
     
     payload = {} 

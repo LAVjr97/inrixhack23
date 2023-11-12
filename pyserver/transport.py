@@ -94,24 +94,24 @@ def calcBestRoute(start_coordinates, dest_coordinates):
     if(sRSG[Index_sRSG] <= fRSG[Index_fRSG]):
         if(FRTime[0] + (.2 * sRTm[Index_sRSG]) < sRTm[Index_RSG]):
             return fR[0]
-        elif (fRDistance[Index_sRDist] + (.4 * sRDistance[Index_sRDist]) < sRDistance)
+        elif (fRDistance[Index_sRDist] + (.4 * sRDistance[Index_sRDist]) < sRDistance):
             return fR[0]
         return sR[Index_sRSG]
     return fR[Index_fRSG]
 
 
 
-    if():
+    # if():
 
 
-    print("frtime: ", fRTime)
-    print("srtime: ", sRTime)
-    print("frspeed: ", fRSpeed)
-    print("srspeed: ", sRSpeed)
-    print("frdistance: ", fRDistance)
-    print("srdistance: ", sRDistance)
-    print("fSG len: ", fRSG)
-    print("sSG len: ", sRSG)
+    # print("frtime: ", fRTime)
+    # print("srtime: ", sRTime)
+    # print("frspeed: ", fRSpeed)
+    # print("srspeed: ", sRSpeed)
+    # print("frdistance: ", fRDistance)
+    # print("srdistance: ", sRDistance)
+    # print("fSG len: ", fRSG)
+    # print("sSG len: ", sRSG)
 
 if __name__ == "__main__":
     start_coordinates = "37.757386%2C-122.490667"

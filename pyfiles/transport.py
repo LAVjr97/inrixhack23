@@ -9,10 +9,12 @@ def generate_token():
     token_json = js.loads(token_response.text)
     return token_json["result"]["token"]
 
+TOKEN = generate_token()
+
 def calcFastestRoute(start_coordinates, dest_coordinates):
     
     payload = {}
-    TOKEN = generate_token()
+    
     url = f"https://api.iq.inrix.com/findRoute?wp_1={start_coordinates}&wp_2={dest_coordinates}&format=json"
     headers = {
         'Authorization': f"Bearer {TOKEN}"
@@ -35,7 +37,6 @@ def findRouteAPI(start_coordinates, dest_coordinates, route_type):
 
     payload = {}
 
-    TOKEN = generate_token()
     headers = {
         'Authorization': f'Bearer {TOKEN}'
     }

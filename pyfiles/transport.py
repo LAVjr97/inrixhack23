@@ -79,6 +79,26 @@ def calcBestRoute(start_coordinates, dest_coordinates):
         sRDistance.append(route['totalDistance'])
         sRSG.append(len(route['summary']['roads'])) 
 
+    Index_sRSG = sRSG.index(min(sRSG))
+    Index_sRDist = sRDistance.index(min(sRSG))
+    Index_sRTm = sRTime.index(min(sRTime))
+
+    Index_fRSG = fRSG.index(min(fRSG))
+    Index_fRDistance = fRDistance.index(min(fRDistance))
+
+    if(sRSG[Index_sRSG] <= fRSG[Index_fRSG]):
+        if(FRTime[0] + (.2 * sRTm[Index_sRSG]) < sRTm[Index_RSG]):
+            return fR[0]
+        elif (fRDistance[Index_sRDist] + (.4 * sRDistance[Index_sRDist]) < sRDistance)
+            return fR[0]
+        return sR[Index_sRSG]
+    return fR[Index_fRSG]
+
+
+
+    if():
+
+
     print("frtime: ", fRTime)
     print("srtime: ", sRTime)
     print("frspeed: ", fRSpeed)

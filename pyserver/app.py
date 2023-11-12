@@ -10,7 +10,7 @@ CORS(app)
 @app.route("/", methods=["GET", "POST"])
 def results():
     if request.method == "POST": 
-        dest = request.form.getlist('') 
+        dest = request.form.getlist('dataToSend') 
     optRoute = transport.calcBestRoute(dest[0], dest[1], dest[2], dest[3])
     return flask.jsonify(optRoute)
 

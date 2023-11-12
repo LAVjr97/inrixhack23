@@ -107,16 +107,16 @@ def calcBestRoute(start_coords_1, start_coords_2, dest_coords_1, dest_coords_2):
     
 if __name__ == "__main__":
     start_coordinates = "37.7266508%2C-122.4761966"
-    dest_coordinates = "37.7689373%2C-122.4278765"#, "37.732906%2C-122.391005"]
+    dest_coordinates = ["37.7689373%2C-122.4278765", "37.732906%2C-122.391005"]
     opt_route = []
 
-    #opt_route = calcBestRoute(start_coordinates, dest_coordinates)
-    # for dest in dest_coordinates:
-    #     if(start_coordinates == dest):
-    #         continue
+    opt_route = calcBestRoute(start_coordinates, dest_coordinates)
+    for dest in dest_coordinates:
+        if(start_coordinates == dest):
+            continue
     
-    #     opt_route.append(calcBestRoute(start_coordinates, dest))
-    #     start_coordinates = dest 
+        opt_route.append(calcBestRoute(start_coordinates, dest))
+        start_coordinates = dest 
     
     print(opt_route)
 

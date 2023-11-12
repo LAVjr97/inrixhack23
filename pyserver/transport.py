@@ -12,14 +12,16 @@ def generate_token():
 
 TOKEN = generate_token()
 
-def calcFastestRoute(start_coordinates, dest_coordinates):
-    
-    payload = {} 
+def findRouteAPI(start_coordinates, dest_coordinates, route_type):
     TOKEN = generate_token()
-    url = f"https://api.iq.inrix.com/findRoute?wp_1={start_coordinates}&wp_2={dest_coordinates}&format=json"
+
+    url = f"https://api.iq.inrix.com/findRoute?wp_1={start_coordinates}&wp_2={dest_coordinates}&maxAlternates=2&routeType={route_type}&format=json"
+
+    payload = {}
     headers = {
-        'Authorization': f"Bearer {TOKEN}"
+        'Authorization': f'Bearer {TOKEN}'
     }
+
     try:
         response = requests.request("GET", url, headers=headers, data=payload)
     except requests.exceptions.RequestException as e:
@@ -28,18 +30,6 @@ def calcFastestRoute(start_coordinates, dest_coordinates):
         print("same")
     else:
         print("Not Same")
-    response_json = js.loads(response.text) 
-        
-    return response_json
-
-def findRouteAPI(start_coordinates, dest_coordinates, route_type):
-    TOKEN = generate_token()
-    url = f"https://api.iq.inrix.com/findRoute?wp_1={start_coordinates}&wp_2={dest_coordinates}&maxAlternates=2&routeType={route_type}&format=json"
-
-    payload = {}
-    headers = {
-        'Authorization': f'Bearer {TOKEN}'
-    }
 
     response = requests.request("GET", url, headers=headers, data=payload) 
 
@@ -52,7 +42,8 @@ def calcBestRoute(start_coordinates, dest_coordinates):
     shortest_route = findRouteAPI(start_coordinates, dest_coordinates, 1)
 
     fR = js.loads(fastest_route) 
-    sR = js.loads(shortest_route) 
+    sR = js.loads(shortest_route)
+
     fRTime = [] 
     fRSpeed = [] 
     fRDistance = [] 
@@ -63,8 +54,7 @@ def calcBestRoute(start_coordinates, dest_coordinates):
     sRDistance = []
     sRSG = []
 
-    for route in fR['result']['trip']['routes']: 
-        #fRTime.append(route['uncongestedTravelTimeMinutes']) 
+    for route in fR['result']['trip']['routes']:
         fRTime.append(route['travelTimeMinutes']) 
         fRSpeed.append(route['averageSpeed']) 
         fRDistance.append(route['totalDistance']) 
@@ -72,7 +62,6 @@ def calcBestRoute(start_coordinates, dest_coordinates):
 
     
     for route in sR['result']['trip']['routes']:
-        #sRTime.append(route['uncongestedTravelTimeMinutes'])
         sRTime.append(route['travelTimeMinutes']) 
         sRSpeed.append(route['averageSpeed'])
         sRDistance.append(route['totalDistance'])
@@ -83,7 +72,7 @@ def calcBestRoute(start_coordinates, dest_coordinates):
     # print("frspeed: ", fRSpeed)
     # print("srspeed: ", sRSpeed)
     # print("frdistance: ", fRDistance)
-    print("srdistance: ", sRDistance)
+    # print("srdistance: ", sRDistance)
     # print("fSG len: ", fRSG)
     # print("sSG len: ", sRSG)
 
@@ -96,19 +85,28 @@ def calcBestRoute(start_coordinates, dest_coordinates):
     Index_fRSG = fRSG.index(min(fRSG))
 
     Index_fRDist = fRDistance.index(min(fRDistance))
-    
-    print(sRDistance[Index_sRDist])
+
     if(sRSG[Index_sRSG] <= fRSG[Index_fRSG]):
         if(fRTime[0] + (.2 * sRTime[Index_sRSG]) < sRTime[Index_sRSG]):
+            print("fRTime")
             return fR['result']['trip']['routes'][0] 
-        elif(fRDistance[Index_fRDist] + (.4 * sRDistance[Index_sRSG]) < sRDistance[Index_sRSG]):
+        
+        elif(float(fRDistance[Index_fRDist]) + (.4 * float(sRDistance[Index_sRSG])) < float(sRDistance[Index_sRSG])):
+            print("fRDistance")
             return fR['result']['trip']['routes'][Index_sRDist]
-    else:  
-        return sR['result']['trip']['routes'][Index_sRSG] 
+
+    return sR['result']['trip']['routes'][Index_sRSG] 
     
 if __name__ == "__main__":
     start_coordinates = "37.7266508%2C-122.4761966"
-    dest_coordinates = "37.7689373%2C-122.4278765"
-    opt_route = calcBestRoute(start_coordinates, dest_coordinates)
+    dest_coordinates = ["37.7689373%2C-122.4278765", "37.732906%2C-122.391005", "37.732906%2C-122.391005"]
+    opt_route = []
+
+    for dest in dest_coordinates:
+        if(start_coordinates == dest):
+            continue
+
+        opt_route.append(calcBestRoute(start_coordinates, dest))
+        start_coordinates = dest 
 
     print(opt_route)

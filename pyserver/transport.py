@@ -3,6 +3,7 @@ import apikeys
 import json as js
 
 
+
 def generate_token():
     payload={}
     token_url = f"https://api.iq.inrix.com/auth/v1/appToken?appId={apikeys.APP_ID}&hashToken={apikeys.HASH_TOKEN}"
@@ -37,7 +38,10 @@ def findRouteAPI(start_coordinates, dest_coordinates, route_type):
 
     return route
 
-def calcBestRoute(start_coordinates, dest_coordinates):
+def calcBestRoute(start_coords_1, start_coords_2, dest_coords_1, dest_coords_2):
+    start_coordinates = start_coords_1 + " %2C" + start_coords_2
+    dest_coordinates = dest_coords_1 + "%2C" + dest_coords_2
+    
     fastest_route = findRouteAPI(start_coordinates, dest_coordinates, 0)
     shortest_route = findRouteAPI(start_coordinates, dest_coordinates, 1)
 
@@ -110,3 +114,4 @@ if __name__ == "__main__":
         start_coordinates = dest 
 
     print(opt_route)
+

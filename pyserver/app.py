@@ -1,13 +1,13 @@
-from flask import Flask, render_template, request
-#from forms import PostForms
+from flask import Flask, request
 import flask
+#from forms import PostForms
 import transport
 from flask_cors import CORS 
 
 app = Flask(__name__)
 CORS(app) 
 
-@app.route("/results", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def results():
     if request.method == "POST":
         dest = request.form.getlist('')

@@ -39,9 +39,8 @@ def findRouteAPI(start_coordinates, dest_coordinates, route_type):
     return route
 
 def calcBestRoute(start_coords_1, start_coords_2, dest_coords_1, dest_coords_2):
-    start_coordinates = start_coords_1 + " %2C" + start_coords_2
+    start_coordinates = start_coords_1 + "%2C" + start_coords_2
     dest_coordinates = dest_coords_1 + "%2C" + dest_coords_2
-    
     fastest_route = findRouteAPI(start_coordinates, dest_coordinates, 0)
     shortest_route = findRouteAPI(start_coordinates, dest_coordinates, 1)
 
@@ -90,28 +89,34 @@ def calcBestRoute(start_coords_1, start_coords_2, dest_coords_1, dest_coords_2):
 
     Index_fRDist = fRDistance.index(min(fRDistance))
 
+    oR = []
+
     if(sRSG[Index_sRSG] <= fRSG[Index_fRSG]):
         if(fRTime[0] + (.2 * sRTime[Index_sRSG]) < sRTime[Index_sRSG]):
             print("fRTime")
-            return fR['result']['trip']['routes'][0] 
+            oR = fR['result']['trip']['routes'][0]['summary']['text']
         
         elif(float(fRDistance[Index_fRDist]) + (.4 * float(sRDistance[Index_sRSG])) < float(sRDistance[Index_sRSG])):
             print("fRDistance")
-            return fR['result']['trip']['routes'][Index_sRDist]
+            return  fR['result']['trip']['routes'][Index_sRDist]['summary']['text']
 
-    return sR['result']['trip']['routes'][Index_sRSG] 
+    return sR['result']['trip']['routes'][Index_sRSG]['summary']['text']
+    
+
+
     
 if __name__ == "__main__":
     start_coordinates = "37.7266508%2C-122.4761966"
-    dest_coordinates = ["37.7689373%2C-122.4278765", "37.732906%2C-122.391005", "37.732906%2C-122.391005"]
+    dest_coordinates = "37.7689373%2C-122.4278765"#, "37.732906%2C-122.391005"]
     opt_route = []
 
-    for dest in dest_coordinates:
-        if(start_coordinates == dest):
-            continue
-
-        opt_route.append(calcBestRoute(start_coordinates, dest))
-        start_coordinates = dest 
-
+    #opt_route = calcBestRoute(start_coordinates, dest_coordinates)
+    # for dest in dest_coordinates:
+    #     if(start_coordinates == dest):
+    #         continue
+    
+    #     opt_route.append(calcBestRoute(start_coordinates, dest))
+    #     start_coordinates = dest 
+    
     print(opt_route)
 

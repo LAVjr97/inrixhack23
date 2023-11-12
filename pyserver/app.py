@@ -10,7 +10,7 @@ def index():
     else:
         return render_template("index.tsx")
 
-@app.route("/results", methods=["GET"])
+@app.route("/results", methods=["POST"])
 def results():
     return {"results": ["Results page", "results", "done"]}
 

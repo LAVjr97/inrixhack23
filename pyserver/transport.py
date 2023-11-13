@@ -119,5 +119,5 @@ if __name__ == "__main__":
     #     opt_route.append(calcBestRoute(start_coordinates, dest))
     #     start_coordinates = dest 
     
-    print(opt_route)
+    print(f"Fastest path is {opt_route}.")
 
